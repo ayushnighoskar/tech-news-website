@@ -1,4 +1,4 @@
-# Tech-News-website
+# Tech-News-Website
 
 This is a responsive tech news website created using ReactJS, featuring search and pagination functionality to enhance user experience. The website utilizes React hooks and components to create dynamic user interfaces, optimizing website performance and increasing engagement.
 
@@ -19,10 +19,10 @@ This is a responsive tech news website created using ReactJS, featuring search a
 
 ## Installation- 
 
-1.Clone the repository to your local machine.
-2.Install the necessary dependencies using npm install.
-3.Start the development server using npm start.
-4.Open http://localhost:3000 in your browser to view the website.
+1. Clone the repository to your local machine.
+2. Install the necessary dependencies using npm install.
+3. Start the development server using npm start.
+4. Open http://localhost:3000 in your browser to view the website.
 
 ## Acknowledgements-
 
