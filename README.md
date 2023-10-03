@@ -30,4 +30,4 @@ This project was inspired by various todo list apps and tutorials found online. 
 
 ## Live-Demo-
 
-[Tech-News-Website]()
+[Tech-News-Website](https://tech-news-website.netlify.app/)
