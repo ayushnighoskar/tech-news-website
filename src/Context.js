@@ -1,127 +1,90 @@
-
-import React, { useContext, useReducer, useEffect } from "react";
+import React, {useContext, useReducer, useEffect } from "react";
 import reducer from "./Reducer";
 
 let API = "https://hn.algolia.com/api/v1/search?";
 
 const initialState = {
-
-isLoading: true,
-query: "CSS",
-nbPages: 0,
-page: 0,
-hits: [],
+  isLoading: true,
+  query: "CSS",
+  nbPages: 0,
+  page: 0,
+  hits: [],
 };
 
 const AppContext = React.createContext();
 
 const AppProvider = ({ children }) => {
+  const [state, dispatch] = useReducer(reducer, initialState);
 
-const [state, dispatch] = useReducer (reducer, initialState);
+  const fetchApiData = async (url) => {
+    dispatch({ type: "SET_LOADING" });
 
-const fetchApiData = async (url) => {
+    try {
+      const res = await fetch(url);
 
-dispatch({ type: "SET_LOADING" });
+      const data = await res.json();
 
-try {
+      console.log(data);
 
-const res = await fetch (url) ;
+      dispatch({
+        type: "GET_STORIES",
 
-const data = await res.json();
+        payload: {
+          hits: data.hits,
 
-console.log(data);
+          nbPages: data.nbPages,
+        },
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  // to remove the post
 
-dispatch ({ 
-    
-type: "GET_STORIES",
+  const removePost = (post_ID) => {
+    dispatch({ type: "REMOVE_POST", payload: post_ID });
+  };
 
-payload: {
+  // search
 
-hits: data.hits,
+  const searchPost = (searchQuery) => {
+    dispatch({
+      type: "SEARCH_QUERY",
+      payload: searchQuery,
+    });
+  };
 
-nbPages: data.nbPages,
+  // pagination
 
-},
+  const getNextPage = () => {
+    dispatch({
+      type: "NEXT_PAGE",
+    });
+  };
 
-});
+  const getPrevPage = () => {
+    dispatch({
+      type: "PREV_PAGE",
+    });
+  };
 
+  useEffect(() => {
+    fetchApiData(`${API}query=${state.query} &page=${state.page}`);
+  }, [state.query, state.page]);
 
-
-} catch (error) {
-
-console.log(error);
-
-}
-};
-// to remove the post
-
-const removePost = (post_ID) => {
-
-dispatch({ type: "REMOVE_POST", payload: post_ID });
-
-
-};
-
-
-
-// search
-
-const searchPost = (searchQuery) => {
-
-dispatch({
-
-type: "SEARCH_QUERY",
-payload: searchQuery,
-
-});
-};
-
-// pagination
-
-const getNextPage = () => {
-
-dispatch({
-
-type: "NEXT_PAGE",
-
-});
+  return (
+    <AppContext.Provider
+      value={{ ...state, removePost, searchPost, getNextPage, getPrevPage }}
+    >
+      {children}
+    </AppContext.Provider>
+  );
 };
 
-const getPrevPage = () => {
+// custom hook
 
-dispatch({
-
- type: "PREV_PAGE",  
-
-});
-};
-
-useEffect ( () => {
-
-fetchApiData (`${API}query=${state.query} &page=${state.page}`);
-
-}, [state.query, state.page]);
-
-
-return (
-
-<AppContext.Provider
-
-value={{ ...state, removePost, searchPost, getNextPage, getPrevPage }}>
-
-{children}
-
-</AppContext.Provider>
-
-);
-};
-
-// custom hook 
-
-const useGlobalContext =() => {
-
-return useContext (AppContext);
-
+const useGlobalContext = () => {
+  return useContext(AppContext);
 };
 
 export { AppContext, AppProvider, useGlobalContext };
