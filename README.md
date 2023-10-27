@@ -2,6 +2,7 @@
 
 This is a responsive tech news website created using ReactJS, featuring search and pagination functionality to enhance user experience. The website utilizes React hooks and components to create dynamic user interfaces, optimizing website performance and increasing engagement.
 
+
 ## Tech-Stack-
 
 <div align="left">
